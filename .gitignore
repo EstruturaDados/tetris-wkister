@@ -1,2 +1,11 @@
 bin/
 obj/
+*.o
+*.exe
+*.out
+*.obj
+*.gch
+*~
+tetris
+obj/fila.o
+obj/tetris.o

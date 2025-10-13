@@ -83,3 +83,18 @@ void mostrarFila(Fila *fila) {
     }
     printf("\n");
 }
+
+void jogarPeca(Fila *fila) {
+  printf("\n----------------------------------\n");
+  printf("Jogando a peça da frente da fila...\n");
+  printf("----------------------------------\n");
+  if (filaVazia(fila)) {
+      printf("Fila vazia. Não é possível remover.\n");
+      return;
+  }
+
+  Peca p = fila->itens[fila->inicio];
+  printf("Peça jogada: [%c, %d]\n", p.tipo, p.id);
+  fila->inicio = (fila->inicio + 1) % MAX_PECAS;
+  fila->total--;
+}

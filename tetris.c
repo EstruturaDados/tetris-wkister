@@ -1,9 +1,15 @@
-#include <stdio.h>
+/**
+ * @file tetris.c
+ * @brief Desafio Tetris Stack
+ * @note Tema 3 - Integração de Fila e Pilha
+ * @author Wellington Kister do Nascimento
+ */
 
-// Desafio Tetris Stack
-// Tema 3 - Integração de Fila e Pilha
-// Este código inicial serve como base para o desenvolvimento do sistema de controle de peças.
-// Use as instruções de cada nível para desenvolver o desafio.
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "geral.h" // Protótipos das funções e definições gerais
+#include "fila.h"
 
 int main() {
 

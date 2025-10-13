@@ -4,9 +4,6 @@
 #include <time.h>
 #include "geral.h"
 
-// Vetor de tipos de itens
-char tipoItens[5][TAM_STRING] = {"Arma", "Municao", "Cura", "Equipamento", "Outro"};
-
 // Funções gerais
 /**
  * @brief Função para limpar o buffer de entrada
@@ -17,18 +14,7 @@ void limparBufferEntrada(){
 }
 
 /**
- * @brief Função para exibir os tipos de itens
- * @param tipoItens Vetor de tipos de item
- */
-void exibirTiposItens(char tipoItens[5][TAM_STRING]){
-    printf("Tipos de Itens Disponíveis:\n");
-    for (int i = 0; i < 5; i++){
-        printf("%d. %s\n", i + 1, tipoItens[i]);
-    }
-}
-
-/**
- * @brief Função par imprimir o tempo gasto em operações
+ * @brief Função para imprimir o tempo gasto em operações
  * @param inicio Tempo de início
  * @param fim Tempo de fim
  */

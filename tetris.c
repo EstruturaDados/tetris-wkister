@@ -8,8 +8,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "geral.h" // Protótipos das funções e definições gerais
-#include "fila.h"
+#include "menu.h" // Protótipos das funções do menu
+#include "fila.h" // Protóripos das funções de manipulação de filas
 
 int main() {
 
@@ -25,7 +27,36 @@ int main() {
     //      0 - Sair
     // - A cada remoção, insira uma nova peça ao final da fila.
 
+    // Semente para números aleatórios
+    srand((unsigned int)time(NULL));
 
+    // Definição e inicialização da fila de peças
+    Fila filaPecas;
+    inicializarFila(&filaPecas);
+
+    // Variável para armazenar a opção do menu
+    int opcao = 0;
+    do {
+        exibirMenu();
+        scanf("%d", &opcao);
+        limparBufferEntrada();
+        switch (opcao) {
+            case 1:
+                // jogarPeca(&filaPecas);
+                // inserirPeca(&filaPecas);
+                // mostrarFila(&filaPecas);
+                break;
+            case 2:
+                inserirPeca(&filaPecas);
+                mostrarFila(&filaPecas);
+                break;
+            case 0:
+                printf("Saindo do jogo. Até a próxima!\n");
+                break;
+            default:
+                printf("Opção inválida. Tente novamente.\n");
+        }
+    } while (opcao != 0);
 
     // 🧠 Nível Aventureiro: Adição da Pilha de Reserva
     //

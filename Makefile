@@ -23,17 +23,11 @@ MENU_OBJ = $(OBJDIR)/menu.o
 GERAL_SRC = geral.c
 GERAL_OBJ = $(OBJDIR)/geral.o
 
-# Adicione o caminho para geral.c
-VETOR_SRC = vetores.c
-VETOR_OBJ = $(OBJDIR)/vetores.o
-
-# Adicione o caminho para geral.c
-LISTA_SRC = listas.c
-LISTA_OBJ = $(OBJDIR)/listas.o
+# Adicione o caminho para fila.c
+FILA_SRC = fila.c
+FILA_OBJ = $(OBJDIR)/fila.o
 
 # Permite compilar um arquivo específico: make file=exemplo.c
-
-
 ifeq ($(file),)
 all: dirs $(TARGETS)
 else
@@ -55,9 +49,9 @@ ifeq ($(HAS_MAIN),0)
 	$(CC) $(CFLAGS) -c $(FILE_PATH) -o $(FILE_OBJ)
 else
 	@echo "Compilando e linkando $(FILE_PATH) (possui main)"
-	$(MAKE) $(MENU_OBJ) $(GERAL_OBJ) $(VETOR_OBJ) $(LISTA_OBJ)
+	$(MAKE) $(MENU_OBJ) $(GERAL_OBJ) $(FILA_OBJ)
 	$(CC) $(CFLAGS) -c $(FILE_PATH) -o $(FILE_OBJ)
-	$(CC) $(LDFLAGS) $(FILE_OBJ) $(MENU_OBJ) $(GERAL_OBJ) $(VETOR_OBJ) $(LISTA_OBJ) -o $(FILE_BIN)
+	$(CC) $(LDFLAGS) $(FILE_OBJ) $(MENU_OBJ) $(GERAL_OBJ) $(FILA_OBJ) -o $(FILE_BIN)
 endif
 endif
 
@@ -71,11 +65,7 @@ $(GERAL_OBJ): $(GERAL_SRC)
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(VETOR_OBJ): $(VETOR_SRC)
-	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -c $< -o $@
-
-$(LISTA_OBJ): $(LISTA_SRC)
+$(FILA_OBJ): $(FILA_SRC)
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 

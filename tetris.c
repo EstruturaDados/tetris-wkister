@@ -42,9 +42,10 @@ int main() {
         limparBufferEntrada();
         switch (opcao) {
             case 1:
-                // jogarPeca(&filaPecas);
-                // inserirPeca(&filaPecas);
-                // mostrarFila(&filaPecas);
+                jogarPeca(&filaPecas);
+                // Automaticamente insere uma nova peça após jogar
+                inserirPeca(&filaPecas);
+                mostrarFila(&filaPecas);
                 break;
             case 2:
                 inserirPeca(&filaPecas);

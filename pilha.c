@@ -65,11 +65,8 @@ void push(Pilha *p, Peca nova) {
 Peca pop(Pilha *p) {
     if (pilhaVazia(p)) {
         printf("Pilha vazia. Não é possível remover.\n");
-        return;
+        return (Peca){'X', -1}; // Retorna uma peça inválida
     }
-
-    // *removida = p->itens[p->topo];
-    // p->topo--;
 
     return p->itens[p->topo--];
 }
@@ -93,14 +90,22 @@ void peek(Pilha *p, Peca *visualizada) {
  * @param p Ponteiro para a pilha a ser exibida
  */
 void mostrarPilha(Pilha *p) {
-    printf("\n-----------------------\n");
-    printf("Pilha (topo -> base):\n");
-    for (int i = p->topo; i >= 0; i--) {
-        printf("[%c, %d]\n", p->itens[i].tipo, p->itens[i].id);
+    printf("\n----------------------------------------\n");
+    printf("Pilha (topo -> base): ");
+    if (pilhaVazia(p)) {
+        printf("Vazia.");
+        return;
     }
-    printf("\n-----------------------\n");
+    for (int i = p->topo; i >= 0; i--) {
+        printf("[%c, %d] ", p->itens[i].tipo, p->itens[i].id);
+    }
 }
 
+/**
+ * @brief Move a peça do início da fila para o topo da pilha de reserva
+ * @param pilhaReserva Ponteiro para a pilha de reserva
+ * @param filaPecas Ponteiro para a fila de peças
+ */
 void reservarPeca(Pilha* pilhaReserva, Fila* filaPecas){
     if (pilhaCheia(pilhaReserva)) {
         printf("\n-------------------------------------------------------\n");
@@ -121,7 +126,12 @@ void reservarPeca(Pilha* pilhaReserva, Fila* filaPecas){
     inserirPeca(filaPecas);
 }
 
-void usarPecaReserva(Pilha* pilhaReserva, No* tabuleiro){
+/**
+ * @brief Remove a peça do topo da pilha de reserva e a joga no tabuleiro
+ * @param pilhaReserva Ponteiro para a pilha de reserva
+ * @param tabuleiro Ponteiro para o início da lista encadeada representando o tabuleiro
+ */
+void usarPecaReserva(Pilha* pilhaReserva, No** tabuleiro){
     if (pilhaVazia(pilhaReserva)) {
         printf("\n--------------------------\n");
         printf("Pilha de reserva vazia. Não há peça para usar.\n");
@@ -129,16 +139,5 @@ void usarPecaReserva(Pilha* pilhaReserva, No* tabuleiro){
         return;
     }
 
-    No* novaPeca = (No*)malloc(sizeof(No));
-    if (novaPeca == NULL) {
-        printf("Erro ao alocar memória para nova peça no tabuleiro.\n");
-        return;
-    }
-    novaPeca->peca = pop(pilhaReserva);
-    novaPeca->prox = tabuleiro;
-    tabuleiro = novaPeca;
-    
-    printf("\n--------------------------\n");
-    printf("Usando peça da reserva: [%c, %d]\n", novaPeca->peca.tipo, novaPeca->peca.id);
-    printf("--------------------------\n");
+    inserirTabuleiro(tabuleiro, pop(pilhaReserva));
 }

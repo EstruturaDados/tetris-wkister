@@ -24,6 +24,6 @@ Peca pop(Pilha *p); // Remove o elemento do topo da pilha
 void peek(Pilha *p, Peca *visualizada); // Visualiza o elemento do topo sem remover
 void mostrarPilha(Pilha *p); // Mostra o conteúdo da pilha
 void reservarPeca(Pilha* pilhaReserva, Fila* filaPecas); // Move a peça do início da fila para o topo da pilha de reserva
-void usarPecaReserva(Pilha* pilhaReserva, No* tabuleiro); // Remove a peça do topo da pilha de reserva e a joga no tabuleiro
+void usarPecaReserva(Pilha* pilhaReserva, No** tabuleiro); // Remove a peça do topo da pilha de reserva e a joga no tabuleiro
 
 #endif

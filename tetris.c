@@ -37,21 +37,28 @@ int main() {
     do {
         mostrarFila(&filaPecas);
         mostrarPilha(&pilhaReserva);
+        mostrarTabuleiro(tabuleiro);
 
         exibirMenu();
         scanf("%d", &opcao);
         limparBufferEntrada();
+
         switch (opcao) {
-            case 1: // Jogar a peça no tabuleiro
-                jogarPeca(&filaPecas, tabuleiro, 1);
-                // Automaticamente insere uma nova peça após jogar
-                inserirPeca(&filaPecas);
+            case 1:
+                mostrarFila(&filaPecas);
+                mostrarPilha(&pilhaReserva);
+                mostrarTabuleiro(tabuleiro);
+                pausa();
                 break;
             case 2:
-                reservarPeca(&pilhaReserva, &filaPecas);
+                // Jogar a peça no tabuleiro
+                jogarPeca(&filaPecas, &tabuleiro, 1);
                 break;
             case 3:
-                usarPecaReserva(&pilhaReserva, tabuleiro);
+                reservarPeca(&pilhaReserva, &filaPecas);
+                break;
+            case 4:
+                usarPecaReserva(&pilhaReserva, &tabuleiro);
                 break;
             case 0:
                 printf("Saindo do jogo. Até a próxima!\n");

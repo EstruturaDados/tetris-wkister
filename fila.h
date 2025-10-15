@@ -20,23 +20,24 @@ typedef struct {
     Peca itens[MAX_PECAS]; // Array para armazenar as peças na fila
     int inicio;    // Índice do início da fila
     int fim;       // Índice do fim da fila
-    int total;     // Total de peças na fila
+    // int total;     // Total de peças na fila
 } Fila;
 
 // Estrutura de lista encadeada para representar as peças no tabuleiro
-typedef struct {
+typedef struct No {
     Peca peca;
-    struct No* prox;
+    struct No* proximo;
 } No;
 
 void inicializarFila(Fila* fila); // Inicializa a fila
 int filaVazia(Fila* fila); // Verifica se a fila está vazia
 int filaCheia(Fila* fila); // Verifica se a fila está cheia
 Peca removerPeca(Fila* fila); // Remove a peça da frente da fila
-void jogarPeca(Fila* fila, No* tabuleiro, int opcao); // Remove a peça da frente da fila
+void jogarPeca(Fila* fila, No** tabuleiro, int opcao); // Remove a peça da frente da fila
 void inserirPeca(Fila* fila); // Insere uma peça na fila
 void mostrarFila(Fila* fila); // Mostra o conteúdo da fila
 void mostrarTabuleiro(No* tabuleiro); // Mostra as peças no tabuleiro
 void populaFila(Fila* fila); // Popula a fila inicialmente com 5 peças
+void inserirTabuleiro(No** tabuleiro, Peca peca); // Insere uma peça no tabuleiro (lista encadeada)
 
  #endif

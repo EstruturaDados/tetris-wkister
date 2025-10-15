@@ -3,6 +3,7 @@
 #include <string.h>
 #include <time.h>
 #include "geral.h" // Protótipos das funções e definições gerais
+#include "pilha.h" // Protótipos das funções de manipulação de pilhas
 #include "fila.h" // Protóripos das funções de manipulação de filas
 
 // Definição dos tipos de peças
@@ -25,7 +26,7 @@ void inicializarFila(Fila *fila) {
     printf("-----------------------\n");
     fila->inicio = 0;
     fila->fim = 0;
-    fila->total = 0;
+    // fila->total = 0;
 }
 
 /**
@@ -34,7 +35,7 @@ void inicializarFila(Fila *fila) {
  * @return 1 se a fila estiver vazia, 0 caso contrário
  */
 int filaCheia(Fila *fila) {
-    return fila->total == MAX_PECAS;
+    return (fila->fim - fila->inicio) == MAX_PECAS;
 }
 
 /**
@@ -43,7 +44,7 @@ int filaCheia(Fila *fila) {
  * @return 1 se a fila estiver vazia, 0 caso contrário
  */
 int filaVazia(Fila *fila) {
-    return fila->total == 0;
+    return fila->inicio == fila->fim;
 }
 
 /**
@@ -59,16 +60,13 @@ void inserirPeca(Fila *fila) {
   p.tipo = tipoPecas[rand() % 4]; // Tipo aleatório entre 'I', 'O', 'T', 'L'
   p.id = idCounter++;
 
-  if (fila->total == MAX_PECAS) {
+  if (filaCheia(fila)) {
     printf("\n-------------------------------\n");
     printf("Fila cheia. Não é possível inserir.\n");
     printf("-------------------------------\n");
     return;
   }
-
-  fila->itens[fila->fim] = p;
-  fila->fim = (fila->fim + 1) % MAX_PECAS;
-  fila->total++;
+  fila->itens[fila->fim++ % MAX_PECAS] = p;
 }
 
 /**
@@ -76,12 +74,15 @@ void inserirPeca(Fila *fila) {
  * @param f Ponteiro para a fila a ser exibida
  */
 void mostrarFila(Fila *fila) {
-    printf("\n-----------------------\n");
+    printf("\n----------------------------------------\n");
     printf("Fila: ");
-    for (int i = 0, idx = fila->inicio; i < fila->total; i++, idx = (idx + 1) % MAX_PECAS) {
-        printf("[%c, %d] ", fila->itens[idx].tipo, fila->itens[idx].id);
+    if (filaVazia(fila)) {
+        printf("Vazia.");
+        return;
     }
-    printf("\n-----------------------\n");
+    for (int i = fila->inicio; i < fila->fim; i++) {
+        printf("[%c, %d] ", fila->itens[i % MAX_PECAS].tipo, fila->itens[i % MAX_PECAS].id);
+    }
 }
 
 /**
@@ -89,15 +90,20 @@ void mostrarFila(Fila *fila) {
  * @param tabuleiro Ponteiro para o início da lista encadeada representando o tabuleiro
  */
 void mostrarTabuleiro(No* tabuleiro) {
-    printf("\n-----------------------\n");
-    printf("Tabuleiro:\n");
-    No* atual = tabuleiro;
-    while (atual != NULL) {
-        printf("[%c, %d] -> ", atual->peca.tipo, atual->peca.id);
-        atual = atual->prox;
+    printf("\n----------------------------------------\n");
+    if (tabuleiro == NULL) {
+        printf("Tabuleiro: Vazio.\n");
+        printf("----------------------------------------\n");
+        return;
     }
-    printf("NULL\n");
-    printf("-----------------------\n");
+
+    No* atual = tabuleiro;
+    printf("Tabuleiro: ");
+    while (atual != NULL) {
+        printf("[%c, %d] ", atual->peca.tipo, atual->peca.id);
+        atual = atual->proximo;
+    }
+    printf("\n----------------------------------------\n");
 }
 
 /**
@@ -114,7 +120,9 @@ Peca removerPeca(Fila* fila) {
         return p;
     }
 
-    return fila->itens[fila->inicio++];
+    // Peca p = fila->itens[fila->inicio % MAX_PECAS];
+    // Peca papa = fila->itens[fila->inicio++];
+    return fila->itens[fila->inicio++ % MAX_PECAS];
 }
 
 /**
@@ -122,7 +130,7 @@ Peca removerPeca(Fila* fila) {
  * @param f Ponteiro para a fila
  * @param opcao Define se imprimirá ou não as mensagens de remoção. 1 - Sim, 0 - Não
  */
-void jogarPeca(Fila *fila, No* tabuleiro, int opcao) {
+void jogarPeca(Fila *fila, No** tabuleiro, int opcao) {
     if (opcao){
         printf("\n----------------------------------\n");
         printf("Removendo a peça da frente da fila...\n");
@@ -135,23 +143,11 @@ void jogarPeca(Fila *fila, No* tabuleiro, int opcao) {
         return;
     }
 
-    Peca p = fila->itens[fila->inicio];
-
     // Colocando a peça no tabuleiro
-    No* novaPeca = (No*)malloc(sizeof(No));
-    if (novaPeca == NULL) {
-        printf("Erro ao alocar memória para nova peça no tabuleiro.\n");
-        return;
-    }
-    novaPeca->peca = p;
-    novaPeca->prox = tabuleiro;
-    tabuleiro = novaPeca;
+    inserirTabuleiro(tabuleiro, removerPeca(fila));
 
-    if (opcao){
-        printf("Peça jogada: [%c, %d]\n\n", p.tipo, p.id);
-    }
-    fila->inicio = (fila->inicio + 1) % MAX_PECAS;
-    fila->total--;
+    // Automaticamente insere uma nova peça após jogar
+    inserirPeca(fila);
 }
 
 /**
@@ -164,5 +160,29 @@ void populaFila(Fila *fila) {
     printf("----------------------------------\n");
     while (!filaCheia(fila)) {
         inserirPeca(fila);
+    }
+}
+
+/**
+ * @brief Insere uma peça no tabuleiro (lista encadeada)
+ * @param tabuleiro Ponteiro para o início da lista encadeada representando o tabuleiro
+ * @param peca Peça a ser inserida no tabuleiro
+ */
+void inserirTabuleiro(No** tabuleiro, Peca peca) {
+    No* novaPeca = (No*)malloc(sizeof(No));
+    if (novaPeca == NULL) {
+        printf("Erro ao alocar memória para nova peça no tabuleiro.\n");
+        return;
+    }
+    novaPeca->peca = peca;
+    novaPeca->proximo = NULL;
+    if (*tabuleiro == NULL) {
+        *tabuleiro = novaPeca;
+    } else {
+        No* atual = *tabuleiro;
+        while (atual->proximo != NULL) {
+            atual = atual->proximo;
+        }
+        atual->proximo = novaPeca;
     }
 }

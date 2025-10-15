@@ -52,14 +52,7 @@ int filaVazia(Fila *fila) {
  * @param f Ponteiro para a fila onde o elemento será inserido
  * @param p Elemento a ser inserido na fila
  */
-void inserirPeca(Fila *fila) {
-  // Contador estático para garantir IDs únicos
-  static int idCounter = 1;
-  Peca p;
-  // Gerar uma peça aleatória
-  p.tipo = tipoPecas[rand() % 4]; // Tipo aleatório entre 'I', 'O', 'T', 'L'
-  p.id = idCounter++;
-
+void inserirPeca(Fila *fila, Peca p) {
   if (filaCheia(fila)) {
     printf("\n-------------------------------\n");
     printf("Fila cheia. Não é possível inserir.\n");
@@ -147,7 +140,7 @@ void jogarPeca(Fila *fila, No** tabuleiro, int opcao) {
     inserirTabuleiro(tabuleiro, removerPeca(fila));
 
     // Automaticamente insere uma nova peça após jogar
-    inserirPeca(fila);
+    inserirPeca(fila, pecaAleatoria());
 }
 
 /**
@@ -155,11 +148,15 @@ void jogarPeca(Fila *fila, No** tabuleiro, int opcao) {
  * @param f Ponteiro para a fila a ser populada
  */
 void populaFila(Fila *fila) {
+    // Contador estático para garantir IDs únicos
+    static int idCounter = 1;
+    Peca p;
+
     printf("\n----------------------------------\n");
     printf("Populando a fila inicialmente...\n");
     printf("----------------------------------\n");
     while (!filaCheia(fila)) {
-        inserirPeca(fila);
+        inserirPeca(fila, pecaAleatoria());
     }
 }
 
@@ -185,4 +182,12 @@ void inserirTabuleiro(No** tabuleiro, Peca peca) {
         }
         atual->proximo = novaPeca;
     }
+}
+
+Peca pecaAleatoria() {
+    static int idCounter = 1;
+    Peca p;
+    p.tipo = tipoPecas[rand() % 4]; // Tipo aleatório entre 'I', 'O', 'T', 'L'
+    p.id = idCounter++;
+    return p;
 }

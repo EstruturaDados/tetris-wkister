@@ -123,7 +123,7 @@ void reservarPeca(Pilha* pilhaReserva, Fila* filaPecas){
     // Pega o início da fila e insere a peça na pilha de reserva
     push(pilhaReserva, removerPeca(filaPecas));
     // Insere uma nova peça na fila
-    inserirPeca(filaPecas);
+    inserirPeca(filaPecas, pecaAleatoria());
 }
 
 /**
@@ -140,4 +140,63 @@ void usarPecaReserva(Pilha* pilhaReserva, No** tabuleiro){
     }
 
     inserirTabuleiro(tabuleiro, pop(pilhaReserva));
+}
+
+/**
+ * @brief Troca as peças da frente da fila com o topo da pilha de reserva
+ * @param filaPecas Ponteiro para a fila de peças
+ * @param pilhaReserva Ponteiro para a pilha de reserva
+ */
+void trocarPecasFilaPilha(Fila** filaPecas, Pilha* pilha){
+    if (filaVazia(*filaPecas)) {
+        printf("\n-------------------------------------------------------\n");
+        printf("Fila de peças vazia. Não é possível trocar peças.\n");
+        printf("-------------------------------------------------------\n");
+        return;
+    }
+    if (pilhaVazia(pilha)) {
+        printf("\n-------------------------------------------------------\n");
+        printf("Pilha de reserva vazia. Não é possível trocar peças.\n");
+        printf("-------------------------------------------------------\n");
+        return;
+    }
+
+    printf("\n-------------------------------------------------------\n");
+    printf("Trocando a peça da frente da fila com o topo da pilha...\n");
+    printf("-------------------------------------------------------\n");
+
+    int numPecas = 0; // Número de pecas a serem trocadas, de 1 a 3
+    int numPecasPilha = pilha->topo + 1; // Número de peças na pilha
+
+    Fila* filaAux = (Fila*) malloc(sizeof(Fila));
+
+    inicializarFila(filaAux);
+
+    printf("Quantas peças deseja trocar? (1 a %d): ", numPecasPilha);
+    do {
+        scanf("%d", &numPecas);
+        limparBufferEntrada();
+        if (numPecas < 1 || numPecas > numPecasPilha){
+            printf("Número inválido. Digite um valor entre 1 e %d: ", numPecasPilha);
+        }
+    } while (numPecas < 1 || numPecas > numPecasPilha);
+
+    // Removendo as peças da pilha e armazenando na fila auxiliar
+    for (int i = 0; i < numPecas; i++){
+        inserirPeca(filaAux,  pop(pilha));
+    }
+
+    // Removendo as peças da fila original e armazenando na pilha
+    for (int i = 0; i < numPecas; i++){
+        push(pilha, removerPeca(*filaPecas));
+    }
+
+    // Movendo as peças sobressalentes da fila original para a fila auxiliar
+    // for (int i = filaPecas->inicio; i < filaPecas->fim; i++){
+    for (int i = 0; i < (MAX_PECAS - numPecas); i++){
+        inserirPeca(filaAux, removerPeca(*filaPecas));
+    }
+
+    // Copiando as peças da fila auxiliar de volta para a fila original
+    *filaPecas = filaAux;
 }

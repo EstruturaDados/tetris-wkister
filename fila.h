@@ -34,10 +34,11 @@ int filaVazia(Fila* fila); // Verifica se a fila está vazia
 int filaCheia(Fila* fila); // Verifica se a fila está cheia
 Peca removerPeca(Fila* fila); // Remove a peça da frente da fila
 void jogarPeca(Fila* fila, No** tabuleiro, int opcao); // Remove a peça da frente da fila
-void inserirPeca(Fila* fila); // Insere uma peça na fila
+void inserirPeca(Fila* fila, Peca p); // Insere uma peça aleatória na fila
 void mostrarFila(Fila* fila); // Mostra o conteúdo da fila
 void mostrarTabuleiro(No* tabuleiro); // Mostra as peças no tabuleiro
 void populaFila(Fila* fila); // Popula a fila inicialmente com 5 peças
 void inserirTabuleiro(No** tabuleiro, Peca peca); // Insere uma peça no tabuleiro (lista encadeada)
+Peca pecaAleatoria(); // Gera uma peça aleatória
 
  #endif

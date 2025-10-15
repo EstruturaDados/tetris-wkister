@@ -23,10 +23,14 @@ int main() {
     No* tabuleiro = NULL; // Inicialmente vazio
 
     // Definição e inicialização da fila de peças
-    Fila filaPecas;
-    inicializarFila(&filaPecas);
-    populaFila(&filaPecas); // Popula inicialmente a fila com 5 peças
-    mostrarFila(&filaPecas); // Mostra a fila inicial
+    Fila *filaPecas = malloc(sizeof(Fila));
+    if (!filaPecas) {
+        printf("Erro de alocação de memória para filaPecas!\n");
+        return 1;
+    }
+    inicializarFila(filaPecas);
+    populaFila(filaPecas); // Popula inicialmente a fila com 5 peças
+    mostrarFila(filaPecas); // Mostra a fila inicial
 
     // Definição e inicialização da pilha de reserva
     Pilha pilhaReserva;
@@ -35,7 +39,7 @@ int main() {
     // Variável para armazenar a opção do menu
     int opcao = 0;
     do {
-        mostrarFila(&filaPecas);
+        mostrarFila(filaPecas);
         mostrarPilha(&pilhaReserva);
         mostrarTabuleiro(tabuleiro);
 
@@ -45,20 +49,23 @@ int main() {
 
         switch (opcao) {
             case 1:
-                mostrarFila(&filaPecas);
+                mostrarFila(filaPecas);
                 mostrarPilha(&pilhaReserva);
                 mostrarTabuleiro(tabuleiro);
                 pausa();
                 break;
             case 2:
                 // Jogar a peça no tabuleiro
-                jogarPeca(&filaPecas, &tabuleiro, 1);
+                jogarPeca(filaPecas, &tabuleiro, 1);
                 break;
             case 3:
-                reservarPeca(&pilhaReserva, &filaPecas);
+                reservarPeca(&pilhaReserva, filaPecas);
                 break;
             case 4:
                 usarPecaReserva(&pilhaReserva, &tabuleiro);
+                break;
+            case 5:
+                trocarPecasFilaPilha(&filaPecas, &pilhaReserva);
                 break;
             case 0:
                 printf("Saindo do jogo. Até a próxima!\n");
@@ -86,6 +93,7 @@ int main() {
     //      5 - Trocar 3 primeiros da fila com os 3 da pilha
 
 
+    free(filaPecas);
     return 0;
 }
 

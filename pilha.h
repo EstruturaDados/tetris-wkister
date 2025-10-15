@@ -9,7 +9,7 @@
  */
 
 // Definição do tamanho máximo da pilha
-#define MAX_PILHA 5
+#define MAX_PILHA 3
 
 typedef struct {
     Peca itens[MAX_PILHA];
@@ -20,10 +20,10 @@ void inicializarPilha(Pilha *p); // Inicializa a pilha
 int pilhaVazia(Pilha *p); // Verifica se a pilha está vazia
 int pilhaCheia(Pilha *p); // Verifica se a pilha está cheia
 void push(Pilha *p, Peca nova); // Adiciona um elemento no topo da pilha
-void pop(Pilha *p, Peca *removida); // Remove o elemento do topo da pilha
+Peca pop(Pilha *p); // Remove o elemento do topo da pilha
 void peek(Pilha *p, Peca *visualizada); // Visualiza o elemento do topo sem remover
 void mostrarPilha(Pilha *p); // Mostra o conteúdo da pilha
 void reservarPeca(Pilha* pilhaReserva, Fila* filaPecas); // Move a peça do início da fila para o topo da pilha de reserva
-void usarPecaReserva(Pilha* pilhaReserva); // Remove a peça do topo da pilha de reserva e a joga no tabuleiro
+void usarPecaReserva(Pilha* pilhaReserva, No* tabuleiro); // Remove a peça do topo da pilha de reserva e a joga no tabuleiro
 
 #endif

@@ -85,11 +85,44 @@ void mostrarFila(Fila *fila) {
 }
 
 /**
+ * @brief Exibe as peças no tabuleiro (lista encadeada)
+ * @param tabuleiro Ponteiro para o início da lista encadeada representando o tabuleiro
+ */
+void mostrarTabuleiro(No* tabuleiro) {
+    printf("\n-----------------------\n");
+    printf("Tabuleiro:\n");
+    No* atual = tabuleiro;
+    while (atual != NULL) {
+        printf("[%c, %d] -> ", atual->peca.tipo, atual->peca.id);
+        atual = atual->prox;
+    }
+    printf("NULL\n");
+    printf("-----------------------\n");
+}
+
+/**
+ * @brief Remove o elemento da frente da fila
+ * @param f Ponteiro para a fila
+ * @return A peça removida da frente da fila
+ */
+Peca removerPeca(Fila* fila) {
+    if (filaVazia(fila)) {
+        printf("\n----------------------------------\n");
+        printf("Fila vazia. Não é possível remover.\n");
+        printf("----------------------------------\n");
+        Peca p = {'X', -1}; // Retorna uma peça inválida
+        return p;
+    }
+
+    return fila->itens[fila->inicio++];
+}
+
+/**
  * @brief Remove o elemento da frente da fila
  * @param f Ponteiro para a fila
  * @param opcao Define se imprimirá ou não as mensagens de remoção. 1 - Sim, 0 - Não
  */
-void jogarPeca(Fila *fila, int opcao) {
+void jogarPeca(Fila *fila, No* tabuleiro, int opcao) {
     if (opcao){
         printf("\n----------------------------------\n");
         printf("Removendo a peça da frente da fila...\n");
@@ -103,6 +136,17 @@ void jogarPeca(Fila *fila, int opcao) {
     }
 
     Peca p = fila->itens[fila->inicio];
+
+    // Colocando a peça no tabuleiro
+    No* novaPeca = (No*)malloc(sizeof(No));
+    if (novaPeca == NULL) {
+        printf("Erro ao alocar memória para nova peça no tabuleiro.\n");
+        return;
+    }
+    novaPeca->peca = p;
+    novaPeca->prox = tabuleiro;
+    tabuleiro = novaPeca;
+
     if (opcao){
         printf("Peça jogada: [%c, %d]\n\n", p.tipo, p.id);
     }

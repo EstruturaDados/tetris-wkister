@@ -62,14 +62,16 @@ void push(Pilha *p, Peca nova) {
  * @param p Ponteiro para a pilha de onde o elemento será removido
  * @param removida Ponteiro para armazenar o elemento removido
  */
-void pop(Pilha *p, Peca *removida) {
+Peca pop(Pilha *p) {
     if (pilhaVazia(p)) {
         printf("Pilha vazia. Não é possível remover.\n");
         return;
     }
 
-    *removida = p->itens[p->topo];
-    p->topo--;
+    // *removida = p->itens[p->topo];
+    // p->topo--;
+
+    return p->itens[p->topo--];
 }
 
 /**
@@ -113,16 +115,13 @@ void reservarPeca(Pilha* pilhaReserva, Fila* filaPecas){
         return;
     }
 
-    // Pega o início da fila
-    Peca p = filaPecas->itens[filaPecas->inicio];
-    // Remove o primeiro elemento da fila
-    jogarPeca(filaPecas, 0); // 0 para não imprimir mensagem de remoção
-    inserirPeca(filaPecas); // Insere uma nova peça na fila
-    // Insere a peça na pilha de reserva
-    push(pilhaReserva, p);
+    // Pega o início da fila e insere a peça na pilha de reserva
+    push(pilhaReserva, removerPeca(filaPecas));
+    // Insere uma nova peça na fila
+    inserirPeca(filaPecas);
 }
 
-void usarPecaReserva(Pilha* pilhaReserva){
+void usarPecaReserva(Pilha* pilhaReserva, No* tabuleiro){
     if (pilhaVazia(pilhaReserva)) {
         printf("\n--------------------------\n");
         printf("Pilha de reserva vazia. Não há peça para usar.\n");
@@ -130,9 +129,16 @@ void usarPecaReserva(Pilha* pilhaReserva){
         return;
     }
 
-    Peca p;
-    pop(pilhaReserva, &p);
+    No* novaPeca = (No*)malloc(sizeof(No));
+    if (novaPeca == NULL) {
+        printf("Erro ao alocar memória para nova peça no tabuleiro.\n");
+        return;
+    }
+    novaPeca->peca = pop(pilhaReserva);
+    novaPeca->prox = tabuleiro;
+    tabuleiro = novaPeca;
+    
     printf("\n--------------------------\n");
-    printf("Usando peça da reserva: [%c, %d]\n", p.tipo, p.id);
+    printf("Usando peça da reserva: [%c, %d]\n", novaPeca->peca.tipo, novaPeca->peca.id);
     printf("--------------------------\n");
 }

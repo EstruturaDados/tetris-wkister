@@ -19,6 +19,9 @@ int main() {
     // Semente para números aleatórios
     srand((unsigned int)time(NULL));
 
+    // Definição e inicialização do tabuleiro
+    No* tabuleiro = NULL; // Inicialmente vazio
+
     // Definição e inicialização da fila de peças
     Fila filaPecas;
     inicializarFila(&filaPecas);
@@ -40,21 +43,15 @@ int main() {
         limparBufferEntrada();
         switch (opcao) {
             case 1: // Jogar a peça no tabuleiro
-                jogarPeca(&filaPecas, 1);
+                jogarPeca(&filaPecas, tabuleiro, 1);
                 // Automaticamente insere uma nova peça após jogar
                 inserirPeca(&filaPecas);
-                // mostrarFila(&filaPecas);
-                // mostrarPilha(&pilhaReserva);
                 break;
             case 2:
                 reservarPeca(&pilhaReserva, &filaPecas);
-                // mostrarFila(&filaPecas);
-                // mostrarPilha(&pilhaReserva);
                 break;
             case 3:
-                usarPecaReserva(&pilhaReserva);
-                // mostrarFila(&filaPecas);
-                // mostrarPilha(&pilhaReserva);
+                usarPecaReserva(&pilhaReserva, tabuleiro);
                 break;
             case 0:
                 printf("Saindo do jogo. Até a próxima!\n");

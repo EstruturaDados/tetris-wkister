@@ -12,6 +12,7 @@
 #include "geral.h" // Protótipos das funções e definições gerais
 #include "menu.h" // Protótipos das funções do menu
 #include "fila.h" // Protóripos das funções de manipulação de filas
+#include "pilha.h" // Protótipos das funções de manipulação de pilhas
 
 int main() {
 
@@ -33,23 +34,39 @@ int main() {
     // Definição e inicialização da fila de peças
     Fila filaPecas;
     inicializarFila(&filaPecas);
+    populaFila(&filaPecas); // Popula inicialmente a fila com 5 peças
+    mostrarFila(&filaPecas); // Mostra a fila inicial
+
+    // Definição e inicialização da pilha de reserva
+    Pilha pilhaReserva;
+    inicializarPilha(&pilhaReserva);
 
     // Variável para armazenar a opção do menu
     int opcao = 0;
     do {
+        mostrarFila(&filaPecas);
+        mostrarPilha(&pilhaReserva);
+
         exibirMenu();
         scanf("%d", &opcao);
         limparBufferEntrada();
         switch (opcao) {
-            case 1:
-                jogarPeca(&filaPecas);
+            case 1: // Jogar a peça no tabuleiro
+                jogarPeca(&filaPecas, 1);
                 // Automaticamente insere uma nova peça após jogar
                 inserirPeca(&filaPecas);
-                mostrarFila(&filaPecas);
+                // mostrarFila(&filaPecas);
+                // mostrarPilha(&pilhaReserva);
                 break;
             case 2:
-                inserirPeca(&filaPecas);
-                mostrarFila(&filaPecas);
+                reservarPeca(&pilhaReserva, &filaPecas);
+                // mostrarFila(&filaPecas);
+                // mostrarPilha(&pilhaReserva);
+                break;
+            case 3:
+                usarPecaReserva(&pilhaReserva);
+                // mostrarFila(&filaPecas);
+                // mostrarPilha(&pilhaReserva);
                 break;
             case 0:
                 printf("Saindo do jogo. Até a próxima!\n");

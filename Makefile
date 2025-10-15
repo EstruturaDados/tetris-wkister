@@ -27,6 +27,10 @@ GERAL_OBJ = $(OBJDIR)/geral.o
 FILA_SRC = fila.c
 FILA_OBJ = $(OBJDIR)/fila.o
 
+# Adicione o caminho para pilha.c
+PILHA_SRC = pilha.c
+PILHA_OBJ = $(OBJDIR)/pilha.o
+
 # Permite compilar um arquivo específico: make file=exemplo.c
 ifeq ($(file),)
 all: dirs $(TARGETS)
@@ -49,9 +53,9 @@ ifeq ($(HAS_MAIN),0)
 	$(CC) $(CFLAGS) -c $(FILE_PATH) -o $(FILE_OBJ)
 else
 	@echo "Compilando e linkando $(FILE_PATH) (possui main)"
-	$(MAKE) $(MENU_OBJ) $(GERAL_OBJ) $(FILA_OBJ)
+	$(MAKE) $(MENU_OBJ) $(GERAL_OBJ) $(FILA_OBJ) $(PILHA_OBJ)
 	$(CC) $(CFLAGS) -c $(FILE_PATH) -o $(FILE_OBJ)
-	$(CC) $(LDFLAGS) $(FILE_OBJ) $(MENU_OBJ) $(GERAL_OBJ) $(FILA_OBJ) -o $(FILE_BIN)
+	$(CC) $(LDFLAGS) $(FILE_OBJ) $(MENU_OBJ) $(GERAL_OBJ) $(FILA_OBJ) $(PILHA_OBJ) -o $(FILE_BIN)
 endif
 endif
 
@@ -66,6 +70,10 @@ $(GERAL_OBJ): $(GERAL_SRC)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(FILA_OBJ): $(FILA_SRC)
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(PILHA_OBJ): $(PILHA_SRC)
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 

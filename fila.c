@@ -52,9 +52,6 @@ int filaVazia(Fila *fila) {
  * @param p Elemento a ser inserido na fila
  */
 void inserirPeca(Fila *fila) {
-  printf("\n----------------------------------\n");
-  printf("Inserindo uma nova peça na fila...\n");
-  printf("----------------------------------\n");
   // Contador estático para garantir IDs únicos
   static int idCounter = 1;
   Peca p;
@@ -63,8 +60,10 @@ void inserirPeca(Fila *fila) {
   p.id = idCounter++;
 
   if (fila->total == MAX_PECAS) {
-      printf("Fila cheia. Não é possível inserir.\n");
-      return;
+    printf("\n-------------------------------\n");
+    printf("Fila cheia. Não é possível inserir.\n");
+    printf("-------------------------------\n");
+    return;
   }
 
   fila->itens[fila->fim] = p;
@@ -77,24 +76,49 @@ void inserirPeca(Fila *fila) {
  * @param f Ponteiro para a fila a ser exibida
  */
 void mostrarFila(Fila *fila) {
+    printf("\n-----------------------\n");
     printf("Fila: ");
     for (int i = 0, idx = fila->inicio; i < fila->total; i++, idx = (idx + 1) % MAX_PECAS) {
         printf("[%c, %d] ", fila->itens[idx].tipo, fila->itens[idx].id);
     }
-    printf("\n");
+    printf("\n-----------------------\n");
 }
 
-void jogarPeca(Fila *fila) {
-  printf("\n----------------------------------\n");
-  printf("Jogando a peça da frente da fila...\n");
-  printf("----------------------------------\n");
-  if (filaVazia(fila)) {
-      printf("Fila vazia. Não é possível remover.\n");
-      return;
-  }
+/**
+ * @brief Remove o elemento da frente da fila
+ * @param f Ponteiro para a fila
+ * @param opcao Define se imprimirá ou não as mensagens de remoção. 1 - Sim, 0 - Não
+ */
+void jogarPeca(Fila *fila, int opcao) {
+    if (opcao){
+        printf("\n----------------------------------\n");
+        printf("Removendo a peça da frente da fila...\n");
+        printf("----------------------------------\n");
+    }
+    if (filaVazia(fila)) {
+        printf("\n----------------------------------\n");
+        printf("Fila vazia. Não é possível remover.\n");
+        printf("----------------------------------\n");
+        return;
+    }
 
-  Peca p = fila->itens[fila->inicio];
-  printf("Peça jogada: [%c, %d]\n", p.tipo, p.id);
-  fila->inicio = (fila->inicio + 1) % MAX_PECAS;
-  fila->total--;
+    Peca p = fila->itens[fila->inicio];
+    if (opcao){
+        printf("Peça jogada: [%c, %d]\n\n", p.tipo, p.id);
+    }
+    fila->inicio = (fila->inicio + 1) % MAX_PECAS;
+    fila->total--;
+}
+
+/**
+ * @brief Popula a fila inicialmente com 5 peças
+ * @param f Ponteiro para a fila a ser populada
+ */
+void populaFila(Fila *fila) {
+    printf("\n----------------------------------\n");
+    printf("Populando a fila inicialmente...\n");
+    printf("----------------------------------\n");
+    while (!filaCheia(fila)) {
+        inserirPeca(fila);
+    }
 }

@@ -11,7 +11,8 @@ void exibirMenu(){
     printf("--- MENU PRINCIPAL ---\n");
     printf("----------------------\n");
     printf("1. Jogar peça\n");
-    printf("2. Inserir nova peça\n");
+    printf("2. Reservar peça\n");
+    printf("3. Usar peça reservada\n");
     printf("0. Sair\n");
     printf("Escolha uma opção: ");
 }

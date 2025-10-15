@@ -26,8 +26,9 @@ typedef struct {
 void inicializarFila(Fila* fila); // Inicializa a fila
 int filaVazia(Fila* fila); // Verifica se a fila está vazia
 int filaCheia(Fila* fila); // Verifica se a fila está cheia
-void jogarPeca(Fila* fila); // Remove a peça da frente da fila
+void jogarPeca(Fila* fila, int opcao); // Remove a peça da frente da fila
 void inserirPeca(Fila* fila); // Insere uma peça na fila
 void mostrarFila(Fila* fila); // Mostra o conteúdo da fila
+void populaFila(Fila* fila); // Popula a fila inicialmente com 5 peças
 
  #endif

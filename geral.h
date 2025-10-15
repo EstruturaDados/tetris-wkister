@@ -1,6 +1,8 @@
 #ifndef GERAL_H
 #define GERAL_H
 
+#include <time.h>
+
 // --- Constantes ---
 #define TAM_STRING 50 // Tamanho máximo para strings
 #define MAX_PECAS 5 // Tamanho máximo de peças no jogo
